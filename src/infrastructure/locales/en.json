@@ -1,0 +1,124 @@
+{
+  "AppTitle": "We Cookin'",
+  "generalError": "Oops! Something went wrong",
+
+  "common": {
+    "action": {
+      "login": "Login",
+      "signup": "Signup",
+      "logout": "Logout",
+      "save": "Save",
+      "submit": "Submit",
+      "cancel": "Cancel",
+      "edit": "Edit",
+      "delete": "Delete",
+      "chooseFile": "Choose File",
+      "sendMessage": "Send Message",
+      "createAccount": "Create Account",
+      "resetPassword": "Reset Password",
+      "uploadAvatar": "Upload New Avatar",
+      "uploadImage": "Upload Image",
+      "startNow": "Start Now",
+      "contact": "Contact",
+      "agree": "Agree",
+      "decline": "Decline",
+      "editRestaurant": "Edit Restaurant",
+      "deleteRestaurant": "Delete Restaurant ?"
+    },
+    "content": {
+      "or": "or",
+      "day": "Day",
+      "month": "Month",
+      "year": "Year",
+      "open": "Open",
+      "closed": "Closed",
+      "settings": "Settings",
+      "favRestaurants": "Favorite Restaurants",
+      "myRestaurants": "My Restaurants",
+      "newRestaurant": "New Restaurant",
+      "basicInfo": "Basic Info"
+    },
+    "placeholder": {
+      "email": "Email",
+      "username": "Username",
+      "password": "Password",
+      "message": "Message",
+      "cuisine": "Cuisine",
+      "searchRestaurant": "Search Restaurant"
+    },
+    "errors": {
+      "notFoundRestaurant": "Restaurant Not Found",
+      "noReviews": "There are no reviews yet 🥲"
+    }
+  },
+
+  "weekDays": {
+    "oppeningHours": "Openning Hours",
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday",
+    "sunday": "Sunday"
+  },
+
+  "yupValidation": {
+    "usernameRequired": "Username is Required",
+    "30CharsMax": "Keep It Under 30 Characters, No Rambling!",
+    "nameRequired": "Name is Required",
+    "emailRequired": "Email is Required",
+    "emailInvalid": "Please insert a valid email",
+    "passwordRequired": "Password is Required",
+    "passwordMin": "Password must be at least 8 characters long",
+    "passwordLowercase": "Password must have at least one Lowercase letter",
+    "passwordUppercase": "Password must have at least one Uppercase letter",
+    "passwordDigit": "Password must have at least one Digit!",
+    "messageRequired": "Message is Required",
+    "cuisineType": "Cuisine Type is Required",
+    "address": "Address is Required",
+    "operatingHours": "Hours are required when open"
+  },
+
+  "navbar": {
+    "home": "Home",
+    "about": "About",
+    "profile": "Profile",
+    "restaurants": "Restaurants",
+    "profileInfo": "Manage Settings",
+    "restaurantsInfo": "All restaurants info here",
+    "logoutInfo": "We gonna miss you"
+  },
+
+  "footer": {
+    "FAQ": "FAQ",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "contact": "Contact"
+  },
+
+  "homePage": {
+    "heroSec01": "yummy",
+    "heroSec02": "Find Your Next Favorite Restaurant",
+    "heroSec03": "Explore a variety of cuisines and dining experiences in your vicinity. Simply enter your location to start your gastronomic journey!",
+    "featuredRestaurants": "Featured Restaurants"
+  },
+
+  "restaurantPage": { "reviewsTitle": "What People Say ..." },
+
+  "signupPage": {
+    "heading": "Create An Account",
+    "content1": "Join the Crew and Create Your Account",
+    "content2": "Already Have An Account?"
+  },
+
+  "loginPage": {
+    "content": "Feelin' Left Out? Join the Crew!"
+  },
+
+  "contactPage": {
+    "heading": "Contact Us",
+    "content": "Have any Questions? Let Us Know!",
+    "successMessage": "Message Sent"
+  }
+}
