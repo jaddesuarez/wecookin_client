@@ -33,9 +33,11 @@ export interface ICreateRestaurant {
   name: string;
   address: string;
   neighborhood: string;
-  coordinates: {
-    lat: number;
-    lng: number;
+  location: {
+    coordinates: {
+      lat: number;
+      lng: number;
+    };
   };
   image: string;
   cuisineType: string;

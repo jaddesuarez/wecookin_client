@@ -82,9 +82,11 @@ const RestaurantForm = () => {
     name: "",
     address: "",
     neighborhood: "",
-    coordinates: {
-      lat: 0,
-      lng: 0,
+    location: {
+      coordinates: {
+        lat: 0,
+        lng: 0,
+      },
     },
     image: "",
     cuisineType: "",
@@ -145,8 +147,8 @@ const RestaurantForm = () => {
         const { formatted_address, vicinity } = place;
         formik.setFieldValue("address", formatted_address);
         formik.setFieldValue("neighborhood", vicinity);
-        formik.setFieldValue("coordinates.lat", lat);
-        formik.setFieldValue("coordinates.lng", lng);
+        formik.setFieldValue("location.coordinates.lat", lat);
+        formik.setFieldValue("location.coordinates.lng", lng);
       }
     }
   };

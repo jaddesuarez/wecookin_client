@@ -45,9 +45,11 @@ const EditRestaurantForm: FC<EditRestaurantFormProps> = ({
     name: restaurant?.name || "",
     address: restaurant?.address || "",
     neighborhood: restaurant?.neighborhood || "",
-    coordinates: {
-      lat: restaurant?.coordinates.lat || 0,
-      lng: restaurant?.coordinates.lng || 0,
+    location: {
+      coordinates: {
+        lat: restaurant?.location.coordinates.lat || 0,
+        lng: restaurant?.location.coordinates.lng || 0,
+      },
     },
     image: restaurant?.image || "",
     cuisineType: restaurant?.cuisineType._id || "",
