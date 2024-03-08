@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+import { GoogleMap, Marker } from "@react-google-maps/api";
 import { useRouter } from "next/router";
 import { restaurants } from "@/services/restaurants/restaurants.service";
+import { useGoogleMaps } from "@/context/googleMapsLoader.context";
 
 const containerStyle = {
   width: "60vh",
@@ -18,10 +19,7 @@ const center = {
 
 const Map = () => {
   const router = useRouter();
-  const { isLoaded } = useJsApiLoader({
-    id: "google-map-script",
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? "",
-  });
+  const { isLoaded } = useGoogleMaps();
   const [allRestaurants, setAllRestaurants] = useState<
     {
       _id: string;

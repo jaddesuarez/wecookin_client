@@ -6,7 +6,6 @@ import React, {
   CSSProperties,
 } from "react";
 import { Autocomplete } from "@react-google-maps/api";
-import { useGoogleMaps } from "@/context/googleMaps.context";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
 import {
@@ -30,6 +29,7 @@ import { restaurants } from "@/services/restaurants/restaurants.service";
 import { IUpload } from "@/services/cloudinary/types";
 import { upload } from "@/services/cloudinary/cloudinary.service";
 import BounceLoader from "react-spinners/BounceLoader";
+import { useGoogleMaps } from "@/context/googleMapsLoader.context";
 
 const RestaurantForm = () => {
   const { t } = useTranslation();

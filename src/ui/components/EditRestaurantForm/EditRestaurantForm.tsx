@@ -28,7 +28,6 @@ import { restaurants } from "@/services/restaurants/restaurants.service";
 import { IUpload } from "@/services/cloudinary/types";
 import { upload } from "@/services/cloudinary/cloudinary.service";
 import BounceLoader from "react-spinners/BounceLoader";
-import { IRestaurant } from "@/services/restaurants/types";
 import { useModal } from "@/context/modal.context";
 
 import { EditRestaurantFormProps } from "./types";
