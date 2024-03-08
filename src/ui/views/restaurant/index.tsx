@@ -183,7 +183,7 @@ const RestaurantView: FC = () => {
               />
             </CardHeader>
           )}
-          {user && user._id === restaurant.owner._id && (
+          {user && user._id === restaurant.owner && (
             <CardFooter>
               <IconButton
                 icon={<FaRegEdit />}

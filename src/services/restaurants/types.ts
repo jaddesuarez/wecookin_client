@@ -25,7 +25,7 @@ export interface IRestaurant {
     Saturday: { hours: string; isOpen: boolean };
     Sunday: { hours: string; isOpen: boolean };
   };
-  owner: ILoggedUser;
+  owner: string;
   reviews: IReview[];
 }
 
