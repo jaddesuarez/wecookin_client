@@ -40,7 +40,7 @@ const RestaurantListCard: FC<IRestaurantListCardProps> = ({
         </Box>
         <Text
           as={"b"}
-          fontSize={["xl", "2xl", "4xl", "5xl"]}
+          fontSize={["xl", "2xl", "2xl", "3xl"]}
           color={Ecolors.DARK_GREEN}
         >
           {name}

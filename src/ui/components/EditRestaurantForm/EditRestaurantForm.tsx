@@ -42,7 +42,45 @@ const EditRestaurantForm: FC<EditRestaurantFormProps> = ({
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [restaurantData] = useState({
     ...restaurant,
-    cuisineType: restaurant?.cuisineType._id,
+    name: restaurant?.name || "",
+    address: restaurant?.address || "",
+    neighborhood: restaurant?.neighborhood || "",
+    coordinates: {
+      lat: restaurant?.coordinates.lat || 0,
+      lng: restaurant?.coordinates.lng || 0,
+    },
+    image: restaurant?.image || "",
+    cuisineType: restaurant?.cuisineType._id || "",
+    operatingHours: {
+      Monday: {
+        hours: restaurant?.operatingHours.Monday.hours || "",
+        isOpen: restaurant?.operatingHours.Monday.isOpen || false,
+      },
+      Tuesday: {
+        hours: restaurant?.operatingHours.Tuesday.hours || "",
+        isOpen: restaurant?.operatingHours.Tuesday.isOpen || false,
+      },
+      Wednesday: {
+        hours: restaurant?.operatingHours.Wednesday.hours || "",
+        isOpen: restaurant?.operatingHours.Wednesday.isOpen || false,
+      },
+      Thursday: {
+        hours: restaurant?.operatingHours.Thursday.hours || "",
+        isOpen: restaurant?.operatingHours.Thursday.isOpen || false,
+      },
+      Friday: {
+        hours: restaurant?.operatingHours.Friday.hours || "",
+        isOpen: restaurant?.operatingHours.Friday.isOpen || false,
+      },
+      Saturday: {
+        hours: restaurant?.operatingHours.Saturday.hours || "",
+        isOpen: restaurant?.operatingHours.Saturday.isOpen || false,
+      },
+      Sunday: {
+        hours: restaurant?.operatingHours.Sunday.hours || "",
+        isOpen: restaurant?.operatingHours.Sunday.isOpen || false,
+      },
+    },
   });
   const [cousinesOptions, setCousinesOptions] = useState<
     React.ReactNode[] | null
@@ -88,13 +126,17 @@ const EditRestaurantForm: FC<EditRestaurantFormProps> = ({
     onSubmit: async (values, { setSubmitting }) => {
       setSubmitting(true);
       try {
-        restaurants
-          .editRestaurant(restaurant?._id, values)
-          .then((res) => {
-            closeModal();
-            loadData();
-          })
-          .catch((err) => logDev(err));
+        if (restaurant?._id) {
+          restaurants
+            .editRestaurant(restaurant._id, values)
+            .then((res) => {
+              closeModal();
+              loadData();
+            })
+            .catch((err) => logDev(err));
+        } else {
+          logDev("Restaurant ID is undefined.");
+        }
       } catch (err) {
         logDev(err);
       } finally {
@@ -124,7 +166,7 @@ const EditRestaurantForm: FC<EditRestaurantFormProps> = ({
   };
 
   useEffect(() => {
-    setImageSrc(restaurant.image);
+    setImageSrc(restaurant?.image as string);
     cuisines
       .getAllCuisines()
       .then((res) => {

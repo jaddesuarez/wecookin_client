@@ -1,6 +1,6 @@
 import { fetch } from "@/infrastructure/config/axios.config";
 import { AxiosResponse, isAxiosError } from "axios";
-import { IRestaurant } from "./types";
+import { ICreateRestaurant, IRestaurant } from "./types";
 
 const BASE_URL = "/restaurants";
 
@@ -41,7 +41,7 @@ export const restaurants = {
     }
   },
   createRestaurant: async (
-    restaurantData: IRestaurant
+    restaurantData: ICreateRestaurant
   ): Promise<IRestaurant> => {
     try {
       const res = await fetch.post<IRestaurant, AxiosResponse<IRestaurant>>(
@@ -56,7 +56,7 @@ export const restaurants = {
   },
   editRestaurant: async (
     restaurant_id: string,
-    restaurantData: IRestaurant
+    restaurantData: ICreateRestaurant
   ): Promise<IRestaurant> => {
     try {
       const res = await fetch.put<IRestaurant, AxiosResponse<IRestaurant>>(
