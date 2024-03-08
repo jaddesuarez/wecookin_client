@@ -42,7 +42,7 @@ const EditRestaurantForm: FC<EditRestaurantFormProps> = ({
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [restaurantData] = useState({
     ...restaurant,
-    cuisineType: restaurant.cuisineType._id,
+    cuisineType: restaurant?.cuisineType._id,
   });
   const [cousinesOptions, setCousinesOptions] = useState<
     React.ReactNode[] | null
@@ -89,7 +89,7 @@ const EditRestaurantForm: FC<EditRestaurantFormProps> = ({
       setSubmitting(true);
       try {
         restaurants
-          .editRestaurant(restaurant._id, values)
+          .editRestaurant(restaurant?._id, values)
           .then((res) => {
             closeModal();
             loadData();
