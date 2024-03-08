@@ -108,23 +108,23 @@ const Navbar: FC<INavProps> = () => {
                 />
               )}
               <NavItem
-                title={t("navBar.home")}
+                title={t("navbar.home")}
                 icon={FiHome}
                 description=""
                 hRef={"/"}
               />
               <NavItem
-                title={t("navBar.restaurants")}
+                title={t("navbar.restaurants")}
                 icon={MdOutlineFastfood}
-                description={t("navBar.restaurantsInfo")}
+                description={t("navbar.restaurantsInfo")}
                 hRef={"/restaurants"}
               />
               {user && (
                 <>
                   <NavItem
-                    title={t("navBar.profile")}
+                    title={t("navbar.profile")}
                     icon={FiUser}
-                    description={t("navBar.profileInfo")}
+                    description={t("navbar.profileInfo")}
                     hRef={"/profile"}
                   />
                   <Box
@@ -135,7 +135,7 @@ const Navbar: FC<INavProps> = () => {
                     <NavItem
                       title={t("common.action.logout")}
                       icon={FiLogOut}
-                      description={t("navBar.logoutInfo")}
+                      description={t("navbar.logoutInfo")}
                       hRef={"/"}
                     />
                   </Box>
