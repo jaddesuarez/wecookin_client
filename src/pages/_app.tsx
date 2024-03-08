@@ -7,7 +7,6 @@ import Navbar from "@/ui/components/Navbar/Navbar";
 import Footer from "@/ui/components/Footer/Footer";
 import { AuthProvider } from "@/context/auth.context";
 import { ModalProvider } from "@/context/modal.context";
-import { GoogleMapsProvider } from "@/context/googleMaps.context";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -15,11 +14,9 @@ export default function App({ Component, pageProps }: AppProps) {
       <ChakraProvider theme={chakraTheme}>
         <AuthProvider>
           <ModalProvider>
-            <GoogleMapsProvider>
-              <Navbar />
-              <Component {...pageProps} />
-              <Footer />
-            </GoogleMapsProvider>
+            <Navbar />
+            <Component {...pageProps} />
+            <Footer />
           </ModalProvider>
         </AuthProvider>
       </ChakraProvider>
