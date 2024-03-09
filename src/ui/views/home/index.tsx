@@ -59,7 +59,7 @@ const HomeView: FC = () => {
   useEffect(() => {
     setTimeout(() => {
       setFoodVector(foodVector >= 10 ? 1 : foodVector + 1);
-    }, 3000);
+    }, 2000);
   }, [foodVector]);
 
   return (
@@ -67,7 +67,7 @@ const HomeView: FC = () => {
       <Flex
         flexDir={["column", "column", "row", "row"]}
         w={"100%"}
-        h={["70vh", "70vh", "100vh", "100vh"]}
+        h={["70vh", "70vh", "60vh", "100vh"]}
         bgImage={[
           "none",
           "none",
@@ -118,7 +118,7 @@ const HomeView: FC = () => {
         </Box>
         <Image
           display={["none", "none", "block", "block"]}
-          boxSize="sm"
+          boxSize={["xs", "xs", "xs", "sm"]}
           src={`/Images/food${foodVector}.png`}
           alt="Food Vector"
         ></Image>
@@ -134,7 +134,7 @@ const HomeView: FC = () => {
         marginBottom={10}
       >
         <Text
-          fontSize="5xl"
+          fontSize={["3xl", "3xl", "4xl", "5xl"]}
           color={Ecolors.EXTRA_DARK_GREEN}
           as={"b"}
           textShadow={`3px 2px ${Ecolors.WHITE}`}

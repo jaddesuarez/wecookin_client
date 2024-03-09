@@ -13,7 +13,6 @@ import { FaStar, FaRegStar } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { Ecolors } from "@/ui/theme/colors";
 import { ReviewCardProps } from "./types";
-import { useRouter } from "next/router";
 import { AuthContext } from "@/context/auth.context";
 
 const ReviewCard: FC<ReviewCardProps> = ({
@@ -41,27 +40,39 @@ const ReviewCard: FC<ReviewCardProps> = ({
     setIsOwner(user?._id === owner._id);
   }, [rating, user]);
   return (
-    <Flex my={3} flexDir={"column"} maxW={350}>
+    <Flex flexDir={"column"} maxW={["full", "full", "full", 900]}>
       <Flex w={"full"} justify={"space-between"} align={"center"}>
-        <Flex marginBottom={3}>
-          <Avatar size="lg" src={owner.avatar} marginEnd={2}></Avatar>
-          <Text color={Ecolors.EXTRA_DARK_GREEN} as={"b"} alignSelf="center">
-            {owner.username}
-          </Text>
+        <Flex align={"center"}>
+          <Avatar size="lg" src={owner.avatar} marginEnd={2} />
+          <Flex gap={2} flexDir={"column"}>
+            <Text color={Ecolors.EXTRA_DARK_GREEN} as={"b"}>
+              {owner.username}
+            </Text>
+            <HStack>{starts}</HStack>
+          </Flex>
         </Flex>
         {isOwner && (
           <IconButton
             aria-label="delete comment"
             colorScheme="red"
+            rounded={"full"}
             icon={<MdDelete />}
           />
         )}
       </Flex>
-      <HStack>{starts}</HStack>
-      <Text color={Ecolors.DARK_GREEN} fontSize="sm" py={3} textAlign="justify">
-        {comment}
-      </Text>
-      <hr />
+      <Flex>
+        <Box border={"1px"} color={Ecolors.LIGHT_GREY} ms={8}></Box>
+        <Text
+          color={Ecolors.DARK_GREEN}
+          fontSize="sm"
+          ps={5}
+          pt={3}
+          pb={8}
+          textAlign="justify"
+        >
+          {comment}
+        </Text>
+      </Flex>
     </Flex>
   );
 };

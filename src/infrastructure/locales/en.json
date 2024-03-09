@@ -12,6 +12,7 @@
       "cancel": "Cancel",
       "edit": "Edit",
       "delete": "Delete",
+      "comment": "Comment...",
       "chooseFile": "Choose File",
       "sendMessage": "Send Message",
       "createAccount": "Create Account",
@@ -77,7 +78,8 @@
     "messageRequired": "Message is Required",
     "cuisineType": "Cuisine Type is Required",
     "address": "Address is Required",
-    "operatingHours": "Hours are required when open"
+    "operatingHours": "Hours are required when open",
+    "commentReview": "Comment is Required"
   },
 
   "navbar": {

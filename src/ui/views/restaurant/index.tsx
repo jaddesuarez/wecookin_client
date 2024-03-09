@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardFooter,
   IconButton,
+  Box,
 } from "@chakra-ui/react";
 import { AuthContext } from "@/context/auth.context";
 import { MdDelete } from "react-icons/md";
@@ -19,13 +20,15 @@ import { useRouter } from "next/router";
 import { logDev } from "@/infrastructure/utils";
 import { users } from "@/services/user/user.service";
 import { auth } from "@/services/auth/auth.service";
-import { FaRegHeart, FaHeart, FaRegEdit } from "react-icons/fa";
+import { FaRegHeart, FaHeart, FaRegEdit, FaRegClock } from "react-icons/fa";
 import { IoLocationOutline } from "react-icons/io5";
 import ReviewCard from "@/ui/components/ReviewCard/ReviewCard";
 import { useModal } from "@/context/modal.context";
 import Modal from "@/ui/components/Modal/Modal";
 import EditRestaurantForm from "@/ui/components/EditRestaurantForm/EditRestaurantForm";
 import DeleteRestaurantForm from "@/ui/components/DeleteRestaurantForm/DeleteRestaurantForm";
+import Map from "@/ui/components/Map/Map";
+import CreateReviewForm from "@/ui/components/CreateReviewForm/CreateReviewForm";
 
 const RestaurantView: FC = () => {
   const { user, setUser } = useContext(AuthContext);
@@ -35,7 +38,6 @@ const RestaurantView: FC = () => {
   const router = useRouter();
   const { id } = router.query;
   const [restaurant, setRestaurant] = useState<IRestaurant | null>(null);
-  const [isLiked, setIsLiked] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
 
   useEffect(() => {
@@ -52,11 +54,6 @@ const RestaurantView: FC = () => {
         setError(true);
         logDev(err);
       });
-    if (user?.favoriteRestaurants) {
-      setIsLiked(
-        user.favoriteRestaurants?.includes(id as string) ? true : false
-      );
-    }
   };
 
   const handleLikeBtn = () => {
@@ -64,7 +61,6 @@ const RestaurantView: FC = () => {
       .likeRestaurant(restaurant?._id as string)
       .then((res) => {
         setUser(res);
-        setIsLiked(res.favoriteRestaurants.includes(id));
         logDev(res);
       })
       .catch((err) => logDev(err));
@@ -75,7 +71,6 @@ const RestaurantView: FC = () => {
       .dislikeRestaurant(restaurant?._id as string)
       .then((res) => {
         setUser(res);
-        setIsLiked(res.favoriteRestaurants.includes(id));
         logDev(res);
       })
       .catch((err) => logDev(err));
@@ -122,180 +117,265 @@ const RestaurantView: FC = () => {
   }
 
   return (
-    <Flex
-      flexDir={["column", "row"]}
-      w={"100%"}
-      h={"100hv"}
-      justifyContent={"space-around"}
-      align={"center"}
-      py={"80px"}
-    >
-      <Flex my={5} mx={3} flexDir={"column"} pt={8} align="start">
-        <Tag
-          size={"lg"}
-          variant="solid"
-          color={Ecolors.WHITE}
-          backgroundColor={Ecolors.REGULAR_ORANGE}
+    <Flex flexDir={"column"} paddingBottom={20} justify={"center"}>
+      <Card
+        w={"full"}
+        h={"50vh"}
+        bgImage={restaurant.image}
+        bgSize="cover"
+        bgRepeat={"no-repeat"}
+        borderRadius={0}
+        flexDirection="column"
+        justify={"end"}
+      >
+        <CardFooter
+          w={"full"}
+          h={"70px"}
+          bgColor={"rgba(255, 255, 255, 0.6)"}
+          justify={"space-between"}
         >
-          {restaurant.cuisineType.cuisine}
-        </Tag>
-        <Text
-          fontFamily="serif"
-          fontSize="5xl"
-          as={"b"}
-          my={3}
-          color={Ecolors.DARK_GREEN}
-        >
-          {restaurant.name}
-        </Text>
-        <Flex color={Ecolors.EXTRA_DARK_GREEN} marginBottom={3}>
-          <IoLocationOutline size={20} />
-          <Text as={"b"} ms={1}>
-            {restaurant.address}
-          </Text>
+          <Box>
+            {user && (
+              <Box>
+                {user && user._id === restaurant.owner && (
+                  <Flex gap={3}>
+                    <IconButton
+                      size={["xs", "md", "md", "md"]}
+                      icon={<FaRegEdit />}
+                      rounded={"full"}
+                      aria-label="edit-restaurant"
+                      onClick={() => handleOpenModal("editRestaurant")}
+                    />
+                    <IconButton
+                      size={["xs", "md", "md", "md"]}
+                      icon={<MdDelete />}
+                      rounded={"full"}
+                      colorScheme="red"
+                      aria-label="delete-restaurant"
+                      onClick={() => handleOpenModal("deleteRestaurant")}
+                    />
+                  </Flex>
+                )}
+              </Box>
+            )}
+          </Box>
+          <Box>
+            <Text
+              fontFamily="serif"
+              fontSize={["2xl", "3xl", "3xl", "4xl"]}
+              as={"b"}
+              color={Ecolors.EXTRA_DARK_GREEN}
+              textShadow={`2px 1px ${Ecolors.LIGHT_GREEN}`}
+            >
+              {restaurant.name}
+            </Text>
+          </Box>
+          <Box>
+            {user && (
+              <Box>
+                {user.favoriteRestaurants?.includes(id as string) ? (
+                  <IconButton
+                    aria-label="deslike-button"
+                    icon={<FaHeart />}
+                    fontSize={[20, 30, 30, 30]}
+                    isRound={true}
+                    colorScheme="black"
+                    color="red"
+                    variant="ghost"
+                    onClick={handleDeslikeBtn}
+                  />
+                ) : (
+                  <IconButton
+                    aria-label="like-button"
+                    icon={<FaRegHeart />}
+                    fontSize={[20, 30, 30, 30]}
+                    isRound={true}
+                    colorScheme="black"
+                    color="red"
+                    variant="ghost"
+                    onClick={handleLikeBtn}
+                  />
+                )}
+              </Box>
+            )}
+          </Box>
+        </CardFooter>
+      </Card>
+      <Flex
+        gap={[5, 10, 10, 10]}
+        marginTop={5}
+        justify={"center"}
+        flexDir={["column", "row", "row", "row"]}
+        mx={3}
+      >
+        <Flex flexDir={"column"} align={["start", "end", "end", "end"]} gap={3}>
+          <Tag
+            size={"lg"}
+            variant="solid"
+            color={Ecolors.WHITE}
+            backgroundColor={Ecolors.REGULAR_ORANGE}
+          >
+            {restaurant.cuisineType.cuisine}
+          </Tag>
+          <Flex color={Ecolors.EXTRA_DARK_GREEN} marginBottom={3}>
+            <IoLocationOutline size={20} />
+            <Text as={"b"} ms={1}>
+              {restaurant.address}
+            </Text>
+          </Flex>
         </Flex>
-        <Card
-          mx={3}
-          boxSize={350}
-          bgImage={restaurant.image}
-          bgSize="cover"
-          display="flex"
-          flexDirection="column"
-          justifyContent="space-between"
-          marginBottom={3}
-        >
-          {user && (
-            <CardHeader display="flex" justifyContent="end">
-              {user.favoriteRestaurants?.includes(id as string) ? (
-                <IconButton
-                  aria-label="deslike-button"
-                  icon={<FaHeart />}
-                  fontSize={20}
-                  isRound={true}
-                  colorScheme="black"
-                  color={Ecolors.WHITE}
-                  variant="ghost"
-                  onClick={handleDeslikeBtn}
-                />
+        <Flex minW={[0, 0, 400, 600]} flexDir={"column"} gap={3}>
+          <FaRegClock size={25} color={Ecolors.DARK_GREEN} />
+          <Text as={"b"} color={Ecolors.EXTRA_DARK_GREEN} fontSize={"xl"}>
+            {t("weekDays.oppeningHours")}
+          </Text>
+          <Flex
+            borderBottom={"1px"}
+            borderColor={Ecolors.REGULAR_GREY}
+            gap={2}
+            color={Ecolors.DARK_GREEN}
+            pb={2}
+          >
+            <Text as={"b"} minW={24}>
+              {t("weekDays.monday")}
+            </Text>
+            <Text>
+              {restaurant.operatingHours.Monday.isOpen ? (
+                restaurant.operatingHours.Monday.hours
               ) : (
-                <IconButton
-                  aria-label="like-button"
-                  icon={<FaRegHeart />}
-                  fontSize={20}
-                  isRound={true}
-                  colorScheme="black"
-                  color={Ecolors.WHITE}
-                  variant="ghost"
-                  onClick={handleLikeBtn}
-                />
+                <Tag colorScheme="red">{t("common.content.closed")}</Tag>
               )}
-            </CardHeader>
-          )}
-          {user && user._id === restaurant.owner && (
-            <CardFooter>
-              <IconButton
-                icon={<FaRegEdit />}
-                rounded={"full"}
-                aria-label="edit-restaurant"
-                marginEnd={3}
-                onClick={() => handleOpenModal("editRestaurant")}
-              />
-              <IconButton
-                icon={<MdDelete />}
-                rounded={"full"}
-                colorScheme="red"
-                aria-label="delete-restaurant"
-                onClick={() => handleOpenModal("deleteRestaurant")}
-              />
-            </CardFooter>
-          )}
-        </Card>
-        <Flex flexDir={"column"} gap={5} color={Ecolors.EXTRA_DARK_GREEN}>
-          <Text as={"b"}>{t("weekDays.oppeningHours")}</Text>
-          <Text>
-            {t("weekDays.monday")}:{" "}
-            {restaurant.operatingHours.Monday.isOpen ? (
-              restaurant.operatingHours.Monday.hours
-            ) : (
-              <Tag colorScheme="red">{t("common.content.closed")}</Tag>
-            )}
-          </Text>
-          <Text>
-            {t("weekDays.tuesday")}:{" "}
-            {restaurant.operatingHours.Tuesday.isOpen ? (
-              restaurant.operatingHours.Tuesday.hours
-            ) : (
-              <Tag colorScheme="red">{t("common.content.closed")}</Tag>
-            )}
-          </Text>
-          <Text>
-            {t("weekDays.wednesday")}:{" "}
-            {restaurant.operatingHours.Wednesday.isOpen ? (
-              restaurant.operatingHours.Wednesday.hours
-            ) : (
-              <Tag colorScheme="red">{t("common.content.closed")}</Tag>
-            )}
-          </Text>
-          <Text>
-            {t("weekDays.thursday")}:{" "}
-            {restaurant.operatingHours.Thursday.isOpen ? (
-              restaurant.operatingHours.Thursday.hours
-            ) : (
-              <Tag colorScheme="red">{t("common.content.closed")}</Tag>
-            )}
-          </Text>
-          <Text>
-            {t("weekDays.friday")}:{" "}
-            {restaurant.operatingHours.Friday.isOpen ? (
-              restaurant.operatingHours.Friday.hours
-            ) : (
-              <Tag colorScheme="red">{t("common.content.closed")}</Tag>
-            )}
-          </Text>
-          <Text>
-            {t("weekDays.saturday")}:{" "}
-            {restaurant.operatingHours.Saturday.isOpen ? (
-              restaurant.operatingHours.Saturday.hours
-            ) : (
-              <Tag colorScheme="red">{t("common.content.closed")}</Tag>
-            )}
-          </Text>
-          <Text>
-            {t("weekDays.sunday")}:{" "}
-            {restaurant.operatingHours.Sunday.isOpen ? (
-              restaurant.operatingHours.Sunday.hours
-            ) : (
-              <Tag colorScheme="red">{t("common.content.closed")}</Tag>
-            )}
-          </Text>
+            </Text>
+          </Flex>
+          <Flex
+            borderBottom={"1px"}
+            borderColor={Ecolors.REGULAR_GREY}
+            gap={2}
+            color={Ecolors.DARK_GREEN}
+            pb={2}
+          >
+            <Text as={"b"} minW={24}>
+              {t("weekDays.tuesday")}
+            </Text>
+            <Text>
+              {restaurant.operatingHours.Tuesday.isOpen ? (
+                restaurant.operatingHours.Tuesday.hours
+              ) : (
+                <Tag colorScheme="red">{t("common.content.closed")}</Tag>
+              )}
+            </Text>
+          </Flex>
+          <Flex
+            borderBottom={"1px"}
+            borderColor={Ecolors.REGULAR_GREY}
+            gap={2}
+            color={Ecolors.DARK_GREEN}
+            pb={2}
+          >
+            <Text as={"b"} minW={24}>
+              {t("weekDays.wednesday")}
+            </Text>
+            <Text>
+              {restaurant.operatingHours.Wednesday.isOpen ? (
+                restaurant.operatingHours.Wednesday.hours
+              ) : (
+                <Tag colorScheme="red">{t("common.content.closed")}</Tag>
+              )}
+            </Text>
+          </Flex>
+          <Flex
+            borderBottom={"1px"}
+            borderColor={Ecolors.REGULAR_GREY}
+            gap={2}
+            color={Ecolors.DARK_GREEN}
+            pb={2}
+          >
+            <Text as={"b"} minW={24}>
+              {t("weekDays.thursday")}
+            </Text>
+            <Text>
+              {restaurant.operatingHours.Thursday.isOpen ? (
+                restaurant.operatingHours.Thursday.hours
+              ) : (
+                <Tag colorScheme="red">{t("common.content.closed")}</Tag>
+              )}
+            </Text>
+          </Flex>
+          <Flex
+            borderBottom={"1px"}
+            borderColor={Ecolors.REGULAR_GREY}
+            gap={2}
+            color={Ecolors.DARK_GREEN}
+            pb={2}
+          >
+            <Text as={"b"} minW={24}>
+              {t("weekDays.friday")}
+            </Text>
+            <Text>
+              {restaurant.operatingHours.Friday.isOpen ? (
+                restaurant.operatingHours.Friday.hours
+              ) : (
+                <Tag colorScheme="red">{t("common.content.closed")}</Tag>
+              )}
+            </Text>
+          </Flex>
+          <Flex
+            borderBottom={"1px"}
+            borderColor={Ecolors.REGULAR_GREY}
+            gap={2}
+            color={Ecolors.DARK_GREEN}
+            pb={2}
+          >
+            <Text as={"b"} minW={24}>
+              {t("weekDays.saturday")}
+            </Text>
+            <Text>
+              {restaurant.operatingHours.Saturday.isOpen ? (
+                restaurant.operatingHours.Saturday.hours
+              ) : (
+                <Tag colorScheme="red">{t("common.content.closed")}</Tag>
+              )}
+            </Text>
+          </Flex>
+          <Flex
+            borderBottom={"1px"}
+            borderColor={Ecolors.REGULAR_GREY}
+            gap={2}
+            color={Ecolors.DARK_GREEN}
+            pb={2}
+          >
+            <Text as={"b"} minW={24}>
+              {t("weekDays.sunday")}
+            </Text>
+            <Text>
+              {restaurant.operatingHours.Sunday.isOpen ? (
+                restaurant.operatingHours.Sunday.hours
+              ) : (
+                <Tag colorScheme="red">{t("common.content.closed")}</Tag>
+              )}
+            </Text>
+          </Flex>
         </Flex>
       </Flex>
-      <Flex
-        maxH={["full", "full", "80vh", "80vh"]}
-        flexDir={"column"}
-        overflow={["hidden", "hidden", "scroll", "scroll"]}
-        gap={5}
-        my={5}
-        maxW={["250px", "250px", "250px", "full"]}
-      >
-        <Text as={"b"} fontSize={20} color={Ecolors.EXTRA_DARK_GREEN}>
-          {t("restaurantPage.reviewsTitle")}
-        </Text>
-        {restaurant.reviews?.length === 0 && (
-          <Text
-            as={"b"}
-            color={Ecolors.EXTRA_DARK_GREEN}
-            bgColor={Ecolors.LIGHT_YELLOW}
-            borderRadius={5}
-            p={3}
-            border={"1px"}
-          >
-            {t("common.errors.noReviews")}
-          </Text>
-        )}
-        {restaurant.reviews?.map((elm, idx) => (
-          <ReviewCard key={idx} {...elm}></ReviewCard>
-        ))}
+      {true && <CreateReviewForm restaurant_id={restaurant._id} />}
+      <Flex marginTop={10} flexDir={"column"} mx={10} align={"center"}>
+        <Box>
+          {restaurant.reviews?.length === 0 && (
+            <Text
+              as={"b"}
+              color={Ecolors.EXTRA_DARK_GREEN}
+              bgColor={Ecolors.LIGHT_YELLOW}
+              borderRadius={5}
+              p={3}
+              border={"1px"}
+            >
+              {t("common.errors.noReviews")}
+            </Text>
+          )}
+          {restaurant.reviews?.map((elm, idx) => (
+            <ReviewCard key={idx} {...elm}></ReviewCard>
+          ))}
+        </Box>
       </Flex>
       <Modal modalInfo={modalInfo} />
     </Flex>

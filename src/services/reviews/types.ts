@@ -8,3 +8,8 @@ export interface IReview {
     avatar: string;
   };
 }
+
+export interface ICreateReview {
+  comment: string;
+  rating: number;
+}
