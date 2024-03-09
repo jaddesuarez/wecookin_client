@@ -20,7 +20,7 @@ const RestaurantCard: FC<IRestaurantCardProps> = ({ restaurant, isLiked }) => {
   const router = useRouter();
 
   const handleLikeOrDeslikeRestaurant = (
-    e: React.ChangeEvent<HTMLInputElement>
+    e: React.MouseEvent<HTMLButtonElement>
   ) => {
     e.preventDefault;
     isLiked
