@@ -1,4 +1,5 @@
 import React, {
+  FC,
   useState,
   CSSProperties,
   useRef,
@@ -17,17 +18,18 @@ import { users } from "@/services/user/user.service";
 import { auth } from "@/services/auth/auth.service";
 import { logDev } from "@/infrastructure/utils";
 import ErrorText from "../ErrorText/ErrorText";
+import { ILoggedUser } from "@/services/auth/types";
 
-function UploadAvatarForm() {
+const UploadAvatarForm: FC<ILoggedUser> = (user) => {
   const { t } = useTranslation();
   const inputRef: RefObject<HTMLInputElement> = useRef(null);
-  const { user, storeToken, authenticateUser } = useContext(AuthContext);
+  const { storeToken, authenticateUser } = useContext(AuthContext);
   const [error, setError] = useState<string | null>(null);
   const { editUser } = users;
   const [userValues] = useState({
     ...user,
-    username: "" || user?.username,
-    email: "" || user?.email,
+    username: "" || user.username,
+    email: "" || user.email,
   });
   const [imageSrc, setImageSrc] = useState<string | null>(user?.avatar || null);
   const [loadingImage, setLoadingImage] = useState<boolean>(false);
@@ -139,6 +141,6 @@ function UploadAvatarForm() {
       </Flex>
     </FormControl>
   );
-}
+};
 
 export default UploadAvatarForm;

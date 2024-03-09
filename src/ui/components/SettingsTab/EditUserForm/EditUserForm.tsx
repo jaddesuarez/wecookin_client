@@ -69,7 +69,7 @@ const EditUserForm: FC<ILoggedUser> = (user) => {
       case "uploadAvatar":
         setModalInfo({
           title: t("common.action.uploadAvatar"),
-          content: <UploadAvatarForm />,
+          content: <UploadAvatarForm {...user} />,
         });
         break;
     }
