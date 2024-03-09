@@ -18,7 +18,7 @@ const SettingsTab: FC = () => {
       .getMyRestaurants()
       .then((res) => setMyRestaurants(res.map((elm) => elm)))
       .catch((err) => logDev(err));
-  }, []);
+  }, [user]);
 
   if (!user) {
     return <Spinner />;

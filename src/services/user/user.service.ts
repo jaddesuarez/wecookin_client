@@ -53,6 +53,7 @@ export const users = {
   editUser: async (newUserData: ILoggedUser) => {
     try {
       const res = await fetch.put(`${BASE_URL}/editUser`, newUserData);
+      return res.data;
     } catch (error) {
       if (isAxiosError(error)) throw error.response?.data.message;
       throw new Error("An error occurred while desliking restaurant");

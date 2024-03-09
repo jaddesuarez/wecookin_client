@@ -1,4 +1,4 @@
-import { FC, useState, useContext } from "react";
+import { FC, useState, useContext, useEffect } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useTranslation } from "react-i18next";
@@ -12,7 +12,6 @@ import {
   Box,
   FormLabel,
 } from "@chakra-ui/react";
-// import UploadNewAvatarForm from "../../UploadNewAvatarForm/UploadNewAvatarForm";
 import { Ecolors } from "../../../theme/colors";
 import { useModal } from "@/context/modal.context";
 import Modal from "@/ui/components/Modal/Modal";
@@ -32,6 +31,7 @@ const EditUserForm: FC<ILoggedUser> = (user) => {
     ...user,
     username: "" || user.username,
     email: "" || user.email,
+    avatar: "" || user.avatar,
   });
 
   const validationSchema = yup.object({
@@ -75,6 +75,10 @@ const EditUserForm: FC<ILoggedUser> = (user) => {
     }
     openModal();
   };
+
+  useEffect(() => {
+    formik.setFieldValue("avatar", user.avatar);
+  }, [user]);
 
   return (
     <>

@@ -15,15 +15,17 @@ import { AuthContext } from "@/context/auth.context";
 import { upload } from "@/services/cloudinary/cloudinary.service";
 import { IUpload } from "@/services/cloudinary/types";
 import { users } from "@/services/user/user.service";
-import { auth } from "@/services/auth/auth.service";
 import { logDev } from "@/infrastructure/utils";
 import ErrorText from "../ErrorText/ErrorText";
 import { ILoggedUser } from "@/services/auth/types";
+import { useModal } from "@/context/modal.context";
+import { auth } from "@/services/auth/auth.service";
 
 const UploadAvatarForm: FC<ILoggedUser> = (user) => {
   const { t } = useTranslation();
-  const inputRef: RefObject<HTMLInputElement> = useRef(null);
-  const { storeToken, authenticateUser } = useContext(AuthContext);
+  const { closeModal } = useModal();
+  const inputUserImageRef: RefObject<HTMLInputElement> = useRef(null);
+  const { storeToken, authenticateUser, setUser } = useContext(AuthContext);
   const [error, setError] = useState<string | null>(null);
   const { editUser } = users;
   const [userValues] = useState({
@@ -31,8 +33,10 @@ const UploadAvatarForm: FC<ILoggedUser> = (user) => {
     username: "" || user.username,
     email: "" || user.email,
   });
-  const [imageSrc, setImageSrc] = useState<string | null>(user?.avatar || null);
-  const [loadingImage, setLoadingImage] = useState<boolean>(false);
+  const [userImageSrc, setUserImageSrc] = useState<string | null>(
+    user?.avatar || null
+  );
+  const [loadingUserImage, setUserLoadingImage] = useState<boolean>(false);
   const override: CSSProperties = {
     margin: "50px",
   };
@@ -42,11 +46,12 @@ const UploadAvatarForm: FC<ILoggedUser> = (user) => {
     onSubmit: async (values, { setSubmitting }) => {
       setSubmitting(true);
       try {
-        await editUser(values);
+        await editUser(values).then((res) => setUser(res));
         await auth.updateToken().then((res) => {
           storeToken(res);
           authenticateUser();
         });
+        closeModal();
       } catch (err) {
         logDev(err);
       } finally {
@@ -55,8 +60,8 @@ const UploadAvatarForm: FC<ILoggedUser> = (user) => {
     },
   });
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setLoadingImage(true);
+  const handleUserFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUserLoadingImage(true);
     const imageForm = new FormData();
     const files = event.target.files;
     if (files && files.length) {
@@ -67,32 +72,21 @@ const UploadAvatarForm: FC<ILoggedUser> = (user) => {
       upload
         .uploadImage(uploadData)
         .then((data) => {
-          formik.setFieldValue("image", data);
-          setImageSrc(data);
+          formik.setFieldValue("avatar", data);
+          setUserImageSrc(data);
         })
         .catch((err) => {
-          console.log("entro aqui?");
           setError("File size too large");
           logDev(err);
         })
-        .finally(() => setLoadingImage(false));
+        .finally(() => setUserLoadingImage(false));
     }
-  };
-
-  console.log({ error });
-  console.log({ imageSrc });
-  console.log(formik.values);
-
-  const handleSubmit = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ): void => {
-    e.preventDefault();
   };
 
   return (
     <FormControl>
       <Flex flexDirection={"column"} gap={3} align={"center"}>
-        {loadingImage ? (
+        {loadingUserImage ? (
           <BounceLoader
             color={Ecolors.LIGHT_GREEN}
             cssOverride={override}
@@ -101,23 +95,24 @@ const UploadAvatarForm: FC<ILoggedUser> = (user) => {
             data-testid="loader"
           />
         ) : (
-          imageSrc && <Avatar boxSize={120} src={imageSrc} marginBottom={3} />
+          userImageSrc && (
+            <Avatar boxSize={120} src={userImageSrc} marginBottom={3} />
+          )
         )}
         <Input
           type="file"
-          id="file-upload"
+          id="user-file-upload"
           size="md"
           variant="unstyled"
-          onChange={handleFileChange}
+          onChange={handleUserFileChange}
           accept=".jpg,.png"
           hidden
-          ref={inputRef}
+          ref={inputUserImageRef}
         />
         <Button
-          onClick={(e) => e.preventDefault}
-          isDisabled={loadingImage}
+          isDisabled={loadingUserImage}
           as="label"
-          htmlFor="file-upload"
+          htmlFor="user-file-upload"
           size="md"
           cursor="pointer"
         >
@@ -130,9 +125,8 @@ const UploadAvatarForm: FC<ILoggedUser> = (user) => {
           as="b"
           size="sm"
           textTransform="uppercase"
-          isDisabled={loadingImage}
-          type="submit"
-          onClick={handleSubmit}
+          isDisabled={loadingUserImage}
+          onClick={() => formik.handleSubmit()}
           color={Ecolors.EXTRA_DARK_GREEN}
           backgroundColor={Ecolors.REGULAR_ORANGE}
         >
