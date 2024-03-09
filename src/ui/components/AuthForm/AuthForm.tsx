@@ -12,8 +12,10 @@ import {
   Text,
   Flex,
   HStack,
+  InputGroup,
+  InputRightElement,
 } from "@chakra-ui/react";
-import { FaCircle } from "react-icons/fa";
+import { FaCircle, FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { AuthContext } from "@/context/auth.context";
 import { Ecolors } from "@/ui/theme/colors";
 import { auth } from "@/services/auth/auth.service";
@@ -27,6 +29,7 @@ const AuthForm: FC<IAuthForm> = ({ isLogginIn }) => {
   const { t } = useTranslation();
   const router = useRouter();
   const [errors, setErrors] = useState<string[]>([]);
+  const [showPassrod, setShowPassrod] = useState<boolean>(false);
   const { storeToken, authenticateUser } = useContext(AuthContext);
 
   const validationSchema = isLogginIn
@@ -122,12 +125,21 @@ const AuthForm: FC<IAuthForm> = ({ isLogginIn }) => {
           }
           mb={5}
         >
-          <Input
-            type="password"
-            placeholder={t("common.placeholder.password")}
-            {...formik.getFieldProps("password")}
-            isDisabled={formik.isSubmitting}
-          />
+          <InputGroup>
+            <Input
+              type={showPassrod ? "text" : "password"}
+              placeholder={t("common.placeholder.password")}
+              {...formik.getFieldProps("password")}
+              isDisabled={formik.isSubmitting}
+            />
+            <InputRightElement onClick={() => setShowPassrod(!showPassrod)}>
+              {showPassrod ? (
+                <FaRegEye color={Ecolors.REGULAR_GREY} />
+              ) : (
+                <FaRegEyeSlash color={Ecolors.REGULAR_GREY} />
+              )}
+            </InputRightElement>
+          </InputGroup>
           <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
         </FormControl>
         <Button

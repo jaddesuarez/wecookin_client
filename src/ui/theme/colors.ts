@@ -2,6 +2,7 @@ export enum Ecolors {
   WHITE = "#FFFFFF",
   BLACK = "#000000",
   LIGHT_GREY = "#F1F1F1",
+  REGULAR_GREY = "#d9d9d9",
   LIGHT_YELLOW = "#F9DE80",
   REGULAR_ORANGE = "#EAA34D",
   LIGHT_GREEN = "#CCDB99",
