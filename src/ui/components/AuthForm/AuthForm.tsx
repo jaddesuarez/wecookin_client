@@ -9,10 +9,15 @@ import {
   Button,
   Input,
   Box,
+  Text,
+  Flex,
+  HStack,
 } from "@chakra-ui/react";
+import { FaCircle } from "react-icons/fa";
 import { AuthContext } from "@/context/auth.context";
 import { Ecolors } from "@/ui/theme/colors";
 import { auth } from "@/services/auth/auth.service";
+import ErrorText from "../ErrorText/ErrorText";
 
 interface IAuthForm {
   isLogginIn?: boolean;
@@ -58,21 +63,18 @@ const AuthForm: FC<IAuthForm> = ({ isLogginIn }) => {
               const tokenFromServer = data.authToken;
               storeToken(tokenFromServer);
               authenticateUser();
+              router.push("/profile");
             })
             .catch((err) => {
               setErrors(err);
-            })
-            .finally(() => {
-              router.push("/profile");
             });
         } else {
           await auth
             .signup(values)
-            .then()
+            .then(() => router.push("/login"))
             .catch((err) => {
               setErrors(err);
-            })
-            .finally(() => router.push("/login"));
+            });
         }
       } catch (err) {
         console.log(err);
@@ -84,7 +86,24 @@ const AuthForm: FC<IAuthForm> = ({ isLogginIn }) => {
 
   return (
     <form onSubmit={formik.handleSubmit} noValidate>
-      <Box display="grid">
+      <Box
+        p={10}
+        display="grid"
+        border="1px"
+        borderColor={Ecolors.DARK_GREEN}
+        borderRadius={20}
+        shadow="lg"
+        boxShadow="0 0 20px grey"
+      >
+        <Text
+          color={Ecolors.EXTRA_DARK_GREEN}
+          fontSize={30}
+          as={"b"}
+          textAlign={"center"}
+          marginBottom={3}
+        >
+          {isLogginIn ? t("loginPage.heading") : t("signupPage.heading")}
+        </Text>
         <FormControl
           isInvalid={formik.touched.email && formik.errors.email !== undefined}
           mb={5}
@@ -115,7 +134,6 @@ const AuthForm: FC<IAuthForm> = ({ isLogginIn }) => {
           color={Ecolors.WHITE}
           bgColor={Ecolors.DARK_GREEN}
           isLoading={formik.isSubmitting}
-          mb={5}
           type="submit"
           isDisabled={formik.isSubmitting || !formik.isValid || !formik.touched}
         >
@@ -123,7 +141,33 @@ const AuthForm: FC<IAuthForm> = ({ isLogginIn }) => {
             ? t("common.action.login")
             : t("common.action.createAccount")}
         </Button>
+        {errors &&
+          errors.map((elm, idx) => <ErrorText key={idx} error={elm} />)}
+        <Flex justify={"center"} gap={2} my={2}>
+          <Text color={Ecolors.DARK_GREEN} fontSize={16} textAlign={"center"}>
+            {isLogginIn ? t("loginPage.content") : t("signupPage.content")}
+          </Text>
+          <Text
+            cursor={"pointer"}
+            textDecor={"underline"}
+            onClick={() => {
+              isLogginIn ? router.push("/signup") : router.push("/login");
+            }}
+            color={Ecolors.DARK_GREEN}
+            fontSize={16}
+            textAlign={"center"}
+          >
+            {isLogginIn ? t("signupPage.heading") : t("loginPage.heading")}
+          </Text>
+        </Flex>
       </Box>
+      <HStack justifyContent={"center"} marginTop={10} gap={3}>
+        <FaCircle size={30} color={Ecolors.LIGHT_YELLOW} />
+        <FaCircle size={30} color={Ecolors.REGULAR_ORANGE} />
+        <FaCircle size={30} color={Ecolors.LIGHT_GREEN} />
+        <FaCircle size={30} color={Ecolors.EXTRA_DARK_GREEN} />
+        <FaCircle size={30} color={Ecolors.EXTRA_DARK_GREEN} />
+      </HStack>
     </form>
   );
 };

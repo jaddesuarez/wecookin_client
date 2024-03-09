@@ -107,13 +107,13 @@
   "restaurantPage": { "reviewsTitle": "What People Say ..." },
 
   "signupPage": {
-    "heading": "Create An Account",
-    "content1": "Join the Crew and Create Your Account",
-    "content2": "Already Have An Account?"
+    "heading": "Sign Up",
+    "content": "Already Have An Account?"
   },
 
   "loginPage": {
-    "content": "Feelin' Left Out? Join the Crew!"
+    "heading": "Log In",
+    "content": "Don't Have An Account?"
   },
 
   "contactPage": {
