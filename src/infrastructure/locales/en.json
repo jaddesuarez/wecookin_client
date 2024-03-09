@@ -24,7 +24,8 @@
       "agree": "Agree",
       "decline": "Decline",
       "editRestaurant": "Edit Restaurant",
-      "deleteRestaurant": "Delete Restaurant ?"
+      "deleteRestaurant": "Delete Restaurant?",
+      "deleteReview": "Delete Review?"
     },
     "content": {
       "or": "or",

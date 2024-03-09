@@ -5,7 +5,6 @@ import {
   Text,
   Tag,
   Card,
-  CardHeader,
   CardFooter,
   IconButton,
   Box,
@@ -19,7 +18,6 @@ import { restaurants } from "@/services/restaurants/restaurants.service";
 import { useRouter } from "next/router";
 import { logDev } from "@/infrastructure/utils";
 import { users } from "@/services/user/user.service";
-import { auth } from "@/services/auth/auth.service";
 import { FaRegHeart, FaHeart, FaRegEdit, FaRegClock } from "react-icons/fa";
 import { IoLocationOutline } from "react-icons/io5";
 import ReviewCard from "@/ui/components/ReviewCard/ReviewCard";
@@ -27,7 +25,6 @@ import { useModal } from "@/context/modal.context";
 import Modal from "@/ui/components/Modal/Modal";
 import EditRestaurantForm from "@/ui/components/EditRestaurantForm/EditRestaurantForm";
 import DeleteRestaurantForm from "@/ui/components/DeleteRestaurantForm/DeleteRestaurantForm";
-import Map from "@/ui/components/Map/Map";
 import CreateReviewForm from "@/ui/components/CreateReviewForm/CreateReviewForm";
 
 const RestaurantView: FC = () => {
@@ -45,9 +42,9 @@ const RestaurantView: FC = () => {
   }, [id, user]);
 
   const loadData = () => {
+    setError(false);
     getRestaurantById(id)
       .then((res) => {
-        setError(false);
         setRestaurant(res);
       })
       .catch((err) => {
@@ -357,7 +354,12 @@ const RestaurantView: FC = () => {
           </Flex>
         </Flex>
       </Flex>
-      {true && <CreateReviewForm restaurant_id={restaurant._id} />}
+      {true && (
+        <CreateReviewForm
+          setRestaurant={setRestaurant}
+          restaurant_id={restaurant._id}
+        />
+      )}
       <Flex marginTop={10} flexDir={"column"} mx={10} align={"center"}>
         <Box>
           {restaurant.reviews?.length === 0 && (
@@ -373,7 +375,11 @@ const RestaurantView: FC = () => {
             </Text>
           )}
           {restaurant.reviews?.map((elm, idx) => (
-            <ReviewCard key={idx} {...elm}></ReviewCard>
+            <ReviewCard
+              key={idx}
+              review={elm}
+              setRestaurant={setRestaurant}
+            ></ReviewCard>
           ))}
         </Box>
       </Flex>

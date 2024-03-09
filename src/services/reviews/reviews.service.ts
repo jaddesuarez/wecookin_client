@@ -1,21 +1,35 @@
 import { fetch } from "@/infrastructure/config/axios.config";
-import { isAxiosError } from "axios";
-import { IReview } from "./types";
+import { isAxiosError, AxiosResponse } from "axios";
+import { ICreateReview } from "./types";
+import { IRestaurant } from "../restaurants/types";
 
 const BASE_URL = "/reviews";
 
 export const reviews = {
-  createReview: async (restaurant_id: string, reviewData: IReview) => {
+  createReview: async (
+    restaurant_id: string,
+    reviewData: ICreateReview
+  ): Promise<IRestaurant> => {
     try {
-      await fetch.post(`${BASE_URL}/${restaurant_id}`, reviewData);
+      const res = await fetch.post<IRestaurant, AxiosResponse<IRestaurant>>(
+        `${BASE_URL}/${restaurant_id}`,
+        reviewData
+      );
+      return res.data;
     } catch (error) {
       if (isAxiosError(error)) throw error.response?.data.message;
       throw new Error("An error occurred while fetching restaurants");
     }
   },
-  deleteReview: async (review_id: string) => {
+  deleteReview: async (
+    review_id: string,
+    restaurant_id: string
+  ): Promise<IRestaurant> => {
     try {
-      await fetch.delete(`${BASE_URL}/delete/${review_id}`);
+      const res = await fetch.delete<IRestaurant, AxiosResponse<IRestaurant>>(
+        `${BASE_URL}/${review_id}/${restaurant_id}`
+      );
+      return res.data;
     } catch (error) {
       if (isAxiosError(error)) throw error.response?.data.message;
       throw new Error("An error occurred while deleting restaurant");

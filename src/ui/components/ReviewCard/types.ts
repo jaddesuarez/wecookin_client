@@ -1,10 +1,14 @@
+import { IRestaurant } from "@/services/restaurants/types";
 export interface ReviewCardProps {
-  _id: string;
-  comment: string;
-  rating: number;
-  owner: {
+  review: {
     _id: string;
-    username: string;
-    avatar: string;
+    comment: string;
+    rating: number;
+    owner: {
+      _id: string;
+      username: string;
+      avatar: string;
+    };
   };
+  setRestaurant: (value: IRestaurant | null) => void;
 }

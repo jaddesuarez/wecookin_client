@@ -4,13 +4,11 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import {
   Flex,
-  Button,
   Textarea,
   Avatar,
   Text,
   HStack,
   InputGroup,
-  InputLeftElement,
   InputRightElement,
   IconButton,
   FormControl,
@@ -22,8 +20,12 @@ import { AuthContext } from "@/context/auth.context";
 import { Ecolors } from "@/ui/theme/colors";
 import { logDev } from "@/infrastructure/utils";
 import { reviews } from "@/services/reviews/reviews.service";
+import { IRestaurant } from "@/services/restaurants/types";
 
-const CreateReviewForm: FC<{ restaurant_id: string }> = ({ restaurant_id }) => {
+const CreateReviewForm: FC<{
+  setRestaurant: (value: IRestaurant | null) => void;
+  restaurant_id: string;
+}> = ({ setRestaurant, restaurant_id }) => {
   const { t } = useTranslation();
   const { user } = useContext(AuthContext);
 
@@ -36,15 +38,23 @@ const CreateReviewForm: FC<{ restaurant_id: string }> = ({ restaurant_id }) => {
     comment: "",
   };
 
+  const handleHating = (rating: number) => {
+    formik.setFieldValue("rating", rating);
+  };
+
   const formik = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: async (values, { setSubmitting }) => {
+    onSubmit: async (values, { setSubmitting, resetForm }) => {
       setSubmitting(true);
       try {
+        reviews.createReview(restaurant_id, values).then((res) => {
+          setRestaurant(res);
+        });
       } catch (err) {
         logDev(err);
       } finally {
+        resetForm();
         setSubmitting(false);
       }
     },
@@ -60,18 +70,67 @@ const CreateReviewForm: FC<{ restaurant_id: string }> = ({ restaurant_id }) => {
               {user?.username}
             </Text>
             <HStack>
-              <FaStar color={Ecolors.LIGHT_YELLOW} />
-              <FaStar color={Ecolors.LIGHT_YELLOW} />
-              <FaStar color={Ecolors.LIGHT_YELLOW} />
-              <FaStar color={Ecolors.LIGHT_YELLOW} />
-              <FaStar color={Ecolors.LIGHT_YELLOW} />
+              {formik.values.rating >= 1 ? (
+                <FaStar
+                  color={Ecolors.LIGHT_YELLOW}
+                  onClick={() =>
+                    handleHating(formik.values.rating >= 2 ? 1 : 0)
+                  }
+                />
+              ) : (
+                <FaRegStar
+                  color={Ecolors.LIGHT_YELLOW}
+                  onClick={() => handleHating(1)}
+                />
+              )}
+              {formik.values.rating >= 2 ? (
+                <FaStar
+                  color={Ecolors.LIGHT_YELLOW}
+                  onClick={() => handleHating(2)}
+                />
+              ) : (
+                <FaRegStar
+                  color={Ecolors.LIGHT_YELLOW}
+                  onClick={() => handleHating(2)}
+                />
+              )}
+              {formik.values.rating >= 3 ? (
+                <FaStar
+                  color={Ecolors.LIGHT_YELLOW}
+                  onClick={() => handleHating(3)}
+                />
+              ) : (
+                <FaRegStar
+                  color={Ecolors.LIGHT_YELLOW}
+                  onClick={() => handleHating(3)}
+                />
+              )}
+              {formik.values.rating >= 4 ? (
+                <FaStar
+                  color={Ecolors.LIGHT_YELLOW}
+                  onClick={() => handleHating(4)}
+                />
+              ) : (
+                <FaRegStar
+                  color={Ecolors.LIGHT_YELLOW}
+                  onClick={() => handleHating(4)}
+                />
+              )}
+              {formik.values.rating >= 5 ? (
+                <FaStar
+                  color={Ecolors.LIGHT_YELLOW}
+                  onClick={() => handleHating(5)}
+                />
+              ) : (
+                <FaRegStar
+                  color={Ecolors.LIGHT_YELLOW}
+                  onClick={() => handleHating(5)}
+                />
+              )}
             </HStack>
           </Flex>
         </Flex>
         <InputGroup>
-          <InputLeftElement pointerEvents="none">
-            <FaStar color={Ecolors.LIGHT_YELLOW} />
-          </InputLeftElement>
           <FormControl
             isInvalid={
               formik.touched.comment && formik.errors.comment !== undefined
@@ -79,14 +138,17 @@ const CreateReviewForm: FC<{ restaurant_id: string }> = ({ restaurant_id }) => {
             mb={5}
           >
             <Textarea
-              size="lg"
+              size="sm"
               resize="none"
-              {...formik.getFieldProps("email")}
+              {...formik.getFieldProps("comment")}
               placeholder={t("common.action.comment")}
             />
             <FormErrorMessage>{formik.errors.comment}</FormErrorMessage>
           </FormControl>
-          <InputRightElement pointerEvents="none">
+          <InputRightElement
+            onClick={() => formik.handleSubmit()}
+            pointerEvents="visible"
+          >
             <IconButton
               colorScheme="black"
               color="grey"
