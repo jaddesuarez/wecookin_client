@@ -20,14 +20,16 @@ const RestaurantsView: FC = () => {
   }, []);
 
   if (!restaurantList) {
-    <Flex w={"full"} h={"100vh"} align={"center"} justify={"center"}>
-      <Spinner
-        thickness="4px"
-        speed="0.65s"
-        color={Ecolors.DARK_GREEN}
-        size="xl"
-      />
-    </Flex>;
+    return (
+      <Flex w={"full"} h={"100vh"} align={"center"} justify={"center"}>
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          color={Ecolors.DARK_GREEN}
+          size="xl"
+        />
+      </Flex>
+    );
   }
 
   return (
