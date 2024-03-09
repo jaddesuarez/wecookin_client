@@ -28,7 +28,7 @@ import EditRestaurantForm from "@/ui/components/EditRestaurantForm/EditRestauran
 import DeleteRestaurantForm from "@/ui/components/DeleteRestaurantForm/DeleteRestaurantForm";
 
 const RestaurantView: FC = () => {
-  const { user, storeToken, authenticateUser } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
   const { openModal, modalInfo, setModalInfo } = useModal();
   const { t } = useTranslation();
   const { getRestaurantById } = restaurants;
@@ -52,38 +52,33 @@ const RestaurantView: FC = () => {
         setError(true);
         logDev(err);
       });
-    setIsLiked(
-      user?.favoriteRestaurants?.includes(id as string) ? true : false
-    );
+    if (user?.favoriteRestaurants) {
+      setIsLiked(
+        user.favoriteRestaurants?.includes(id as string) ? true : false
+      );
+    }
   };
 
-  const handleLikeOrDeslikeRestaurant = () => {
-    isLiked
-      ? users
-          .dislikeRestaurant(restaurant?._id as string)
-          .then((res) => {
-            setIsLiked(res.favoriteRestaurants.includes(id));
-            loadData();
-            logDev(res);
-          })
-          .catch((err) => logDev(err))
-      : users
-          .likeRestaurant(restaurant?._id as string)
-          .then((res) => {
-            setIsLiked(res.favoriteRestaurants.includes(id));
-            loadData();
-            logDev(res);
-          })
-          .catch((err) => logDev(err));
-    if (user) {
-      auth
-        .updateToken()
-        .then((res) => {
-          storeToken(res);
-          authenticateUser();
-        })
-        .catch((err) => logDev(err));
-    }
+  const handleLikeBtn = () => {
+    users
+      .likeRestaurant(restaurant?._id as string)
+      .then((res) => {
+        setUser(res);
+        setIsLiked(res.favoriteRestaurants.includes(id));
+        logDev(res);
+      })
+      .catch((err) => logDev(err));
+  };
+
+  const handleDeslikeBtn = () => {
+    users
+      .dislikeRestaurant(restaurant?._id as string)
+      .then((res) => {
+        setUser(res);
+        setIsLiked(res.favoriteRestaurants.includes(id));
+        logDev(res);
+      })
+      .catch((err) => logDev(err));
   };
 
   const handleOpenModal = (criteria: string) => {
@@ -171,16 +166,29 @@ const RestaurantView: FC = () => {
         >
           {user && (
             <CardHeader display="flex" justifyContent="end">
-              <IconButton
-                aria-label="like-button"
-                icon={isLiked ? <FaHeart /> : <FaRegHeart />}
-                fontSize={20}
-                isRound={true}
-                colorScheme="black"
-                color={Ecolors.WHITE}
-                variant="ghost"
-                onClick={handleLikeOrDeslikeRestaurant}
-              />
+              {user.favoriteRestaurants?.includes(id as string) ? (
+                <IconButton
+                  aria-label="deslike-button"
+                  icon={<FaHeart />}
+                  fontSize={20}
+                  isRound={true}
+                  colorScheme="black"
+                  color={Ecolors.WHITE}
+                  variant="ghost"
+                  onClick={handleDeslikeBtn}
+                />
+              ) : (
+                <IconButton
+                  aria-label="like-button"
+                  icon={<FaRegHeart />}
+                  fontSize={20}
+                  isRound={true}
+                  colorScheme="black"
+                  color={Ecolors.WHITE}
+                  variant="ghost"
+                  onClick={handleLikeBtn}
+                />
+              )}
             </CardHeader>
           )}
           {user && user._id === restaurant.owner && (

@@ -21,6 +21,7 @@ import { ILoggedUser } from "@/services/auth/types";
 import { logDev } from "@/infrastructure/utils";
 import { auth } from "@/services/auth/auth.service";
 import { AuthContext } from "@/context/auth.context";
+import UploadAvatarForm from "../../UploadAvatarForm/UploadAvatarForm";
 
 const EditUserForm: FC<ILoggedUser> = (user) => {
   const { storeToken, authenticateUser } = useContext(AuthContext);
@@ -68,7 +69,7 @@ const EditUserForm: FC<ILoggedUser> = (user) => {
       case "uploadAvatar":
         setModalInfo({
           title: t("common.action.uploadAvatar"),
-          //   content: <UploadNewAvatarForm />,
+          content: <UploadAvatarForm />,
         });
         break;
     }

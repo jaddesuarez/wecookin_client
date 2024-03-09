@@ -104,6 +104,8 @@
     "featuredRestaurants": "Featured Restaurants"
   },
 
+  "restaurantsPage": { "heading": "Find Your Next Favorite Restaurant" },
+
   "restaurantPage": { "reviewsTitle": "What People Say ..." },
 
   "signupPage": {

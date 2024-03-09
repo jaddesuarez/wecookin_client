@@ -15,15 +15,18 @@ const RestaurantListCard: FC<IRestaurantListCardProps> = ({
   const router = useRouter();
   return (
     <Flex
-      my={3}
-      justify={"center"}
+      w={"full"}
+      borderBottom={"1px"}
+      borderColor={Ecolors.REGULAR_GREY}
+      p={5}
+      justify={"start"}
       cursor={"pointer"}
       onClick={() => router.push(`/restaurants/${_id}`)}
     >
       <Image
         src={image}
         objectFit={"cover"}
-        boxSize={"160px"}
+        boxSize={"130px"}
         borderRadius={"20px"}
         marginEnd={3}
       />
@@ -40,14 +43,14 @@ const RestaurantListCard: FC<IRestaurantListCardProps> = ({
         </Box>
         <Text
           as={"b"}
-          fontSize={["xl", "2xl", "2xl", "3xl"]}
+          fontSize={["md", "xl", "xl", "xl"]}
           color={Ecolors.DARK_GREEN}
         >
           {name}
         </Text>
         <Flex color={Ecolors.EXTRA_DARK_GREEN}>
           <IoLocationOutline />
-          <Text as={"b"} ms={1}>
+          <Text fontSize={"sm"} as={"b"} ms={1}>
             {neighborhood}
           </Text>
         </Flex>

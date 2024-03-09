@@ -29,6 +29,7 @@ import { IUpload } from "@/services/cloudinary/types";
 import { upload } from "@/services/cloudinary/cloudinary.service";
 import BounceLoader from "react-spinners/BounceLoader";
 import { useModal } from "@/context/modal.context";
+import ErrorText from "../ErrorText/ErrorText";
 
 import { EditRestaurantFormProps } from "./types";
 
@@ -40,6 +41,7 @@ const EditRestaurantForm: FC<EditRestaurantFormProps> = ({
   const { closeModal } = useModal();
   const inputRef: RefObject<HTMLInputElement> = useRef(null);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [restaurantData] = useState({
     ...restaurant,
     name: restaurant?.name || "",
@@ -162,7 +164,10 @@ const EditRestaurantForm: FC<EditRestaurantFormProps> = ({
           formik.setFieldValue("image", data);
           setImageSrc(data);
         })
-        .catch((err) => logDev(err))
+        .catch((err) => {
+          setError("File size too large");
+          logDev(err);
+        })
         .finally(() => setLoadingImage(false));
     }
   };
@@ -172,7 +177,6 @@ const EditRestaurantForm: FC<EditRestaurantFormProps> = ({
     cuisines
       .getAllCuisines()
       .then((res) => {
-        console.log({ res });
         setCousinesOptions(
           res.map((elm, idx) => (
             <option key={idx} value={elm._id}>
@@ -246,7 +250,7 @@ const EditRestaurantForm: FC<EditRestaurantFormProps> = ({
             ref={inputRef}
           />
           <Button
-            onClick={() => inputRef.current?.click()}
+            onClick={(e) => e.preventDefault}
             isDisabled={loadingImage}
             as="label"
             htmlFor="file-upload"
@@ -255,6 +259,7 @@ const EditRestaurantForm: FC<EditRestaurantFormProps> = ({
           >
             {t("common.action.uploadImage")}
           </Button>
+          {error && <ErrorText error={error} />}
         </FormControl>
         <Text>{t("weekDays.oppeningHours")}</Text>
         <Flex>

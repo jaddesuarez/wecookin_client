@@ -19,7 +19,10 @@ const RestaurantCard: FC<IRestaurantCardProps> = ({ restaurant, isLiked }) => {
   const { user, storeToken, authenticateUser } = useContext(AuthContext);
   const router = useRouter();
 
-  const handleLikeOrDeslikeRestaurant = () => {
+  const handleLikeOrDeslikeRestaurant = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    e.preventDefault;
     isLiked
       ? users
           .dislikeRestaurant(restaurant._id)
@@ -49,7 +52,10 @@ const RestaurantCard: FC<IRestaurantCardProps> = ({ restaurant, isLiked }) => {
       flexDirection="column"
       justifyContent="space-between"
       cursor={"pointer"}
-      onClick={() => router.push(`/restaurants/${restaurant._id}`)}
+      onClick={(e) => {
+        e.preventDefault;
+        router.push(`/restaurants/${restaurant._id}`);
+      }}
     >
       {user && (
         <CardHeader display="flex" justifyContent="end">

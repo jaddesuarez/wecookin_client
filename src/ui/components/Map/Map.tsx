@@ -5,7 +5,6 @@ import { restaurants } from "@/services/restaurants/restaurants.service";
 import { useGoogleMaps } from "@/context/googleMapsLoader.context";
 
 const containerStyle = {
-  width: "60vh",
   height: "100%",
   marginBottom: "50px",
   borderRadius: "20px",

@@ -20,6 +20,7 @@ import { AuthContext } from "@/context/auth.context";
 import { Ecolors } from "@/ui/theme/colors";
 import { auth } from "@/services/auth/auth.service";
 import ErrorText from "../ErrorText/ErrorText";
+import { logDev } from "@/infrastructure/utils";
 
 interface IAuthForm {
   isLogginIn?: boolean;
@@ -80,7 +81,7 @@ const AuthForm: FC<IAuthForm> = ({ isLogginIn }) => {
             });
         }
       } catch (err) {
-        console.log(err);
+        logDev(err);
       } finally {
         setSubmitting(false);
       }

@@ -30,11 +30,13 @@ import { IUpload } from "@/services/cloudinary/types";
 import { upload } from "@/services/cloudinary/cloudinary.service";
 import BounceLoader from "react-spinners/BounceLoader";
 import { useGoogleMaps } from "@/context/googleMapsLoader.context";
+import ErrorText from "../ErrorText/ErrorText";
 
 const RestaurantForm = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const { isLoaded } = useGoogleMaps();
+  const [error, setError] = useState<string | null>(null);
   const inputRef: RefObject<HTMLInputElement> = useRef(null);
   const [autoCompleteFunction, setAutoCompleteFunction] =
     useState<google.maps.places.Autocomplete | null>(null);
@@ -133,7 +135,10 @@ const RestaurantForm = () => {
           formik.setFieldValue("image", data);
           setImageSrc(data);
         })
-        .catch((err) => logDev(err))
+        .catch((err) => {
+          setError("File size too large");
+          logDev(err);
+        })
         .finally(() => setLoadingImage(false));
     }
   };
@@ -158,7 +163,6 @@ const RestaurantForm = () => {
     cuisines
       .getAllCuisines()
       .then((res) => {
-        console.log({ res });
         setCousinesOptions(
           res.map((elm, idx) => (
             <option key={idx} value={elm._id}>
@@ -258,7 +262,7 @@ const RestaurantForm = () => {
             ref={inputRef}
           />
           <Button
-            onClick={() => inputRef.current?.click()}
+            onClick={(e) => e.preventDefault}
             isDisabled={loadingImage}
             as="label"
             htmlFor="file-upload"
@@ -267,6 +271,7 @@ const RestaurantForm = () => {
           >
             {t("common.action.uploadImage")}
           </Button>
+          {error && <ErrorText error={error} />}
         </FormControl>
         <Text>{t("weekDays.oppeningHours")}</Text>
         <Flex>
