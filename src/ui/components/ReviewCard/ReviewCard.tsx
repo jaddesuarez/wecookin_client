@@ -39,23 +39,25 @@ const ReviewCard: FC<ReviewCardProps> = ({ review, setRestaurant }) => {
   };
 
   useEffect(() => {
-    const startsData = [];
+    const starsData = [];
     for (let i = 0; i < review.rating; i++) {
-      startsData.push(
-        <FaStar key={`star_${i}`} color={Ecolors.LIGHT_YELLOW} />
-      );
+      starsData.push(<FaStar key={`star_${i}`} color={Ecolors.LIGHT_YELLOW} />);
     }
     for (let i = 0; i < 5 - review.rating; i++) {
-      startsData.push(
+      starsData.push(
         <FaRegStar key={`regStar_${i}`} color={Ecolors.LIGHT_YELLOW} />
       );
     }
-    setStars(startsData);
+    setStars(starsData);
     setIsOwner(user?._id === review.owner?._id);
   }, [review, user]);
 
   return (
-    <Flex flexDir={"column"} maxW={["full", "full", "full", 900]}>
+    <Flex
+      flexDir={"column"}
+      minW={[350, 400, 600, 900]}
+      maxW={["full", "full", "full", 900]}
+    >
       <Flex w={"full"} justify={"space-between"} align={"center"}>
         <Flex align={"center"}>
           <Avatar size="lg" src={review.owner?.avatar} marginEnd={2} />

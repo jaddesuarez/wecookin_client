@@ -22,7 +22,7 @@ const RestaurantCard: FC<IRestaurantCardProps> = ({ restaurant, isLiked }) => {
   const handleLikeOrDeslikeRestaurant = (
     e: React.MouseEvent<HTMLButtonElement>
   ) => {
-    e.preventDefault;
+    e.preventDefault();
     isLiked
       ? users
           .dislikeRestaurant(restaurant._id)
@@ -53,7 +53,7 @@ const RestaurantCard: FC<IRestaurantCardProps> = ({ restaurant, isLiked }) => {
       justifyContent="space-between"
       cursor={"pointer"}
       onClick={(e) => {
-        e.preventDefault;
+        e.preventDefault();
         router.push(`/restaurants/${restaurant._id}`);
       }}
     >

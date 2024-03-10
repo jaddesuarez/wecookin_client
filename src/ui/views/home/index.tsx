@@ -80,7 +80,7 @@ const HomeView: FC = () => {
         justifyContent={"space-around"}
         pt={["0px", "0px", "150px", "150px"]}
       >
-        <Box pt={8} maxW={"450px"} px={3}>
+        <Box pt={8} maxW={["350px", "350px", "550px", "550px"]} px={3}>
           <Flex align={"center"}>
             <Text
               p={3}
@@ -96,14 +96,19 @@ const HomeView: FC = () => {
           </Flex>
           <Text
             fontFamily="serif"
-            fontSize="5xl"
+            fontSize={["4xl", "4xl", "5xl", "6xl"]}
             as={"b"}
             my={3}
             color={Ecolors.DARK_GREEN}
           >
             {t("homePage.heroSec02")}
           </Text>
-          <Text fontSize="md" my={3} color={Ecolors.DARK_GREEN}>
+          <Text
+            textAlign={"justify"}
+            fontSize="md"
+            my={3}
+            color={Ecolors.DARK_GREEN}
+          >
             {t("homePage.heroSec03")}
           </Text>
           <Button
