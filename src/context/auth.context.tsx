@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { auth } from "../services/auth/auth.service";
 
 interface IAuthContext {
-  authenticateUser: () => Promise<void>;
+  authenticateUser: () => Promise<ILoggedUser | null>;
   user: ILoggedUser | null;
   setUser: (user: ILoggedUser | null) => void;
   logOut: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
@@ -15,7 +15,7 @@ interface IAuthContext {
 }
 
 export const AuthContext = createContext<IAuthContext>({
-  authenticateUser: () => Promise.resolve(),
+  authenticateUser: () => Promise.resolve(null),
   user: null,
   setUser: () => {},
   logOut: () => Promise.resolve(),
@@ -36,19 +36,22 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const router = useRouter();
 
   const authenticateUser = async () => {
-    const token = localStorage.getItem("authToken");
+    setIsLoading(true);
+    const token = getToken();
 
     if (!token) {
       setIsLoading(false);
-      return;
+      return null;
     }
 
     try {
       const userData = await auth.verify();
       setUser(userData);
+      return userData;
     } catch (error) {
       setUser(null);
       setIsLoading(false);
+      return null;
     } finally {
       setIsLoading(false);
     }
