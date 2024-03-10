@@ -41,21 +41,19 @@ const ContactView: FC = () => {
   const formik = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: async (values, { setSubmitting }) => {
+    onSubmit: async (values, { setSubmitting, resetForm }) => {
       setSubmitting(true);
       try {
         setSuccess(true);
+        resetForm();
       } catch (err) {
         setSuccess(false);
+        resetForm();
       } finally {
         setSubmitting(false);
       }
     },
   });
-
-  useEffect(() => {
-    setSuccess(false);
-  }, [formik.values]);
 
   return (
     <Flex h={"100vh"} m={0} align={"center"}>
