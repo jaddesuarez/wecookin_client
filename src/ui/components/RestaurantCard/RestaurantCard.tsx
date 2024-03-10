@@ -14,6 +14,7 @@ import { auth } from "@/services/auth/auth.service";
 import { AuthContext } from "@/context/auth.context";
 import { useRouter } from "next/router";
 import { IRestaurantCardProps } from "./types";
+import Link from "next/link";
 
 const RestaurantCard: FC<IRestaurantCardProps> = ({ restaurant, isLiked }) => {
   const { user, storeToken, authenticateUser } = useContext(AuthContext);
@@ -44,6 +45,8 @@ const RestaurantCard: FC<IRestaurantCardProps> = ({ restaurant, isLiked }) => {
   };
   return (
     <Card
+      as={Link}
+      href={`/restaurants/${restaurant._id}`}
       mx={3}
       h={"300px"}
       bgImage={restaurant.image}
@@ -52,10 +55,6 @@ const RestaurantCard: FC<IRestaurantCardProps> = ({ restaurant, isLiked }) => {
       flexDirection="column"
       justifyContent="space-between"
       cursor={"pointer"}
-      onClick={(e) => {
-        e.preventDefault();
-        router.push(`/restaurants/${restaurant._id}`);
-      }}
     >
       {user && (
         <CardHeader display="flex" justifyContent="end">
