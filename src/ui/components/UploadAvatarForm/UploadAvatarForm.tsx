@@ -47,10 +47,6 @@ const UploadAvatarForm: FC<ILoggedUser> = (user) => {
       setSubmitting(true);
       try {
         await editUser(values).then((res) => setUser(res));
-        await auth.updateToken().then((res) => {
-          storeToken(res);
-          authenticateUser();
-        });
         closeModal();
       } catch (err) {
         logDev(err);

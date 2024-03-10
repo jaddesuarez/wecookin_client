@@ -23,7 +23,7 @@ import { AuthContext } from "@/context/auth.context";
 import UploadAvatarForm from "../../UploadAvatarForm/UploadAvatarForm";
 
 const EditUserForm: FC<ILoggedUser> = (user) => {
-  const { storeToken, authenticateUser } = useContext(AuthContext);
+  const { setUser } = useContext(AuthContext);
   const { openModal, modalInfo, setModalInfo } = useModal();
   const { t } = useTranslation();
   const { editUser } = users;
@@ -51,11 +51,7 @@ const EditUserForm: FC<ILoggedUser> = (user) => {
     onSubmit: async (values, { setSubmitting }) => {
       setSubmitting(true);
       try {
-        await editUser(values);
-        await auth.updateToken().then((res) => {
-          storeToken(res);
-          authenticateUser();
-        });
+        await editUser(values).then((res) => setUser(res));
       } catch (err) {
         logDev(err);
       } finally {
