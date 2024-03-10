@@ -4,5 +4,4 @@ export interface IRestaurantCardProps {
     image: string;
     name: string;
   };
-  isLiked: boolean;
 }

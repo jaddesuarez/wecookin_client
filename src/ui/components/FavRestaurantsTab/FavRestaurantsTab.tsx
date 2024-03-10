@@ -18,17 +18,9 @@ const FavRestaurantsTab: FC = () => {
     users
       .getFavoriteRestaurants()
       .then((res) => {
-        const restaurantComponents = res.map((elm) => {
-          const isLiked =
-            user?.favoriteRestaurants?.includes(elm._id as string) || false;
-          return (
-            <RestaurantCard
-              key={elm._id}
-              restaurant={elm as any}
-              isLiked={isLiked}
-            />
-          );
-        });
+        const restaurantComponents = res.map((elm) => (
+          <RestaurantCard key={elm._id} restaurant={elm as any} />
+        ));
         setFavRestaurants(restaurantComponents);
       })
       .catch((err) => logDev(err));

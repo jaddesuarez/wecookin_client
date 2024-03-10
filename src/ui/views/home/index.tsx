@@ -40,17 +40,9 @@ const HomeView: FC = () => {
     restaurants
       .getRandomRestaurants()
       .then((res) => {
-        const restaurantComponents = res.map((elm) => {
-          const isLiked =
-            user?.favoriteRestaurants?.includes(elm._id as string) || false;
-          return (
-            <RestaurantCard
-              key={elm._id}
-              restaurant={elm as any}
-              isLiked={isLiked}
-            />
-          );
-        });
+        const restaurantComponents = res.map((elm) => (
+          <RestaurantCard key={elm._id} restaurant={elm as any} />
+        ));
         setFeaturedRestaurants(restaurantComponents);
       })
       .catch((err) => logDev(err));

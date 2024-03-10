@@ -70,10 +70,10 @@ const AuthForm: FC<IAuthForm> = ({ isLogginIn }) => {
           await auth
             .login(values)
             .then((data) => {
+              router.push("/profile");
               const tokenFromServer = data.authToken;
               storeToken(tokenFromServer);
               authenticateUser();
-              router.push("/profile");
             })
             .catch((err) => {
               setErrors(err);

@@ -5,44 +5,41 @@ import {
   CardHeader,
   CardFooter,
   IconButton,
+  Box,
 } from "@chakra-ui/react";
 import { Ecolors } from "@/ui/theme/colors";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { users } from "@/services/user/user.service";
 import { logDev } from "@/infrastructure/utils";
-import { auth } from "@/services/auth/auth.service";
 import { AuthContext } from "@/context/auth.context";
-import { useRouter } from "next/router";
 import { IRestaurantCardProps } from "./types";
 import Link from "next/link";
 
-const RestaurantCard: FC<IRestaurantCardProps> = ({ restaurant, isLiked }) => {
-  const { user, storeToken, authenticateUser } = useContext(AuthContext);
-  const router = useRouter();
+const RestaurantCard: FC<IRestaurantCardProps> = ({ restaurant }) => {
+  const { user, setUser } = useContext(AuthContext);
 
-  const handleLikeOrDeslikeRestaurant = (
-    e: React.MouseEvent<HTMLButtonElement>
-  ) => {
+  const handleLikeBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    isLiked
-      ? users
-          .dislikeRestaurant(restaurant._id)
-          .then((res) => logDev(res))
-          .catch((err) => logDev(err))
-      : users
-          .likeRestaurant(restaurant._id)
-          .then((res) => logDev(res))
-          .catch((err) => logDev(err));
-    if (user) {
-      auth
-        .updateToken()
-        .then((res) => {
-          storeToken(res);
-          authenticateUser();
-        })
-        .catch((err) => logDev(err));
-    }
+    users
+      .likeRestaurant(restaurant._id)
+      .then((res) => {
+        setUser(res);
+        logDev(res);
+      })
+      .catch((err) => logDev(err));
   };
+
+  const handleDeslikeBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    users
+      .dislikeRestaurant(restaurant._id)
+      .then((res) => {
+        setUser(res);
+        logDev(res);
+      })
+      .catch((err) => logDev(err));
+  };
+
   return (
     <Card
       as={Link}
@@ -58,16 +55,31 @@ const RestaurantCard: FC<IRestaurantCardProps> = ({ restaurant, isLiked }) => {
     >
       {user && (
         <CardHeader display="flex" justifyContent="end">
-          <IconButton
-            aria-label="like-button"
-            icon={isLiked ? <FaHeart /> : <FaRegHeart />}
-            fontSize={20}
-            isRound={true}
-            colorScheme="black"
-            color={Ecolors.WHITE}
-            variant="ghost"
-            onClick={handleLikeOrDeslikeRestaurant}
-          />
+          <Box>
+            {user.favoriteRestaurants?.includes(restaurant._id) ? (
+              <IconButton
+                aria-label="deslike-button"
+                icon={<FaHeart />}
+                fontSize={20}
+                isRound={true}
+                colorScheme="black"
+                color={Ecolors.WHITE}
+                variant="ghost"
+                onClick={handleDeslikeBtn}
+              />
+            ) : (
+              <IconButton
+                aria-label="like-button"
+                icon={<FaRegHeart />}
+                fontSize={20}
+                isRound={true}
+                colorScheme="black"
+                color={Ecolors.WHITE}
+                variant="ghost"
+                onClick={handleLikeBtn}
+              />
+            )}
+          </Box>
         </CardHeader>
       )}
       <CardFooter>
