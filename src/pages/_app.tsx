@@ -8,6 +8,7 @@ import Footer from "@/ui/components/Footer/Footer";
 import { AuthProvider } from "@/context/auth.context";
 import { ModalProvider } from "@/context/modal.context";
 import { GoogleMapsProvider } from "@/context/googleMapsLoader.context";
+import Head from "next/head";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -16,6 +17,10 @@ export default function App({ Component, pageProps }: AppProps) {
         <AuthProvider>
           <GoogleMapsProvider>
             <ModalProvider>
+              <Head>
+                <link rel="icon" href="/Images/wecookinfavicon.png" />
+                <title>We Cookin'</title>
+              </Head>
               <Navbar />
               <Component {...pageProps} />
               <Footer />
