@@ -58,7 +58,7 @@ const Footer: FC<IFooterProps> = () => {
         </HStack>
       </Flex>
       <Flex gap={5}>
-        <Link href="#" isExternal>
+        <Link href="https://cook.fly.dev/api/restaurants/getAll" isExternal>
           <Icon as={IoCodeSlash} boxSize={8} />
         </Link>
         <Link href="https://www.linkedin.com/in/jaddesuarez/" isExternal>
