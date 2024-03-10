@@ -83,7 +83,12 @@ const EditUserForm: FC<ILoggedUser> = (user) => {
   return (
     <>
       <form onSubmit={formik.handleSubmit} noValidate>
-        <Flex justify={"space-between"} mb={5} mx={5} minW={350}>
+        <Flex
+          justify={"space-between"}
+          mb={5}
+          mx={5}
+          minW={[300, 300, 350, 400]}
+        >
           <Text as="b" textTransform="uppercase">
             {t("common.content.basicInfo")}
           </Text>

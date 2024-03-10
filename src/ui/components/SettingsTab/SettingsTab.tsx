@@ -26,9 +26,10 @@ const SettingsTab: FC = () => {
 
   return (
     <Flex
-      flexDir={["column", "column", "row", "row"]}
+      flexDir={["column", "column", "column", "row"]}
       justify={"center"}
       align={"center"}
+      mb={8}
     >
       <Flex
         flexDirection={"column"}
@@ -46,7 +47,7 @@ const SettingsTab: FC = () => {
         />
       </Flex>
       <Box
-        display={["none", "none", "block", "block"]}
+        display={["none", "none", "none", "block"]}
         h={"400px"}
         w={"1px"}
         backgroundColor={Ecolors.LIGHT_GREY}

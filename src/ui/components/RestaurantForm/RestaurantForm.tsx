@@ -157,7 +157,6 @@ const RestaurantForm = () => {
       }
     }
   };
-  console.log(formik.values);
 
   useEffect(() => {
     cuisines
@@ -176,7 +175,7 @@ const RestaurantForm = () => {
   return (
     <form onSubmit={formik.handleSubmit} noValidate>
       <Flex
-        maxH={"60vh"}
+        maxH={["full", "full", "60vh", "60vh"]}
         overflow={["hidden", "hidden", "scroll", "scroll"]}
         flexDir={"column"}
         gap={5}
