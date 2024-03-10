@@ -34,7 +34,13 @@ const AuthForm: FC<IAuthForm> = ({ isLogginIn }) => {
   const { storeToken, authenticateUser } = useContext(AuthContext);
 
   const validationSchema = isLogginIn
-    ? yup.object({})
+    ? yup.object({
+        email: yup
+          .string()
+          .email(t("yupValidation.emailInvalid"))
+          .required(t("yupValidation.emailRequired")),
+        password: yup.string().required(t("yupValidation.passwordRequired")),
+      })
     : yup.object({
         email: yup
           .string()
