@@ -1,6 +1,6 @@
 import { fetch } from "@/infrastructure/config/axios.config";
 import { AxiosResponse, isAxiosError } from "axios";
-import { ICreateRestaurant, IRestaurant } from "./types";
+import { ICreateRestaurant, IRestaurant, IRestaurantAvgRating } from "./types";
 
 const BASE_URL = "/restaurants";
 
@@ -38,6 +38,20 @@ export const restaurants = {
     } catch (error) {
       if (isAxiosError(error)) throw error.response?.data.message;
       throw new Error("An error occurred while fetching restaurant");
+    }
+  },
+  getRestaurantAvgRatingById: async (
+    restaurant_id: string | string[] | undefined
+  ): Promise<IRestaurantAvgRating> => {
+    try {
+      const res = await fetch.get<
+        IRestaurantAvgRating,
+        AxiosResponse<IRestaurantAvgRating>
+      >(`${BASE_URL}/getAvgRatingById/${restaurant_id}`);
+      return res.data;
+    } catch (error) {
+      if (isAxiosError(error)) throw error.response?.data.message;
+      throw new Error("An error occurred while fetching restaurant avg rating");
     }
   },
   createRestaurant: async (

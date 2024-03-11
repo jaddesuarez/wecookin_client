@@ -51,3 +51,8 @@ export interface ICreateRestaurant {
     Sunday: { hours: string; isOpen: boolean };
   };
 }
+
+export interface IRestaurantAvgRating {
+  rating: number;
+  totalRevirews: number;
+}

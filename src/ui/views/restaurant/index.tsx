@@ -8,17 +8,28 @@ import {
   CardFooter,
   IconButton,
   Box,
+  HStack,
 } from "@chakra-ui/react";
 import { AuthContext } from "@/context/auth.context";
 import { MdDelete } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import { Ecolors } from "@/ui/theme/colors";
-import { IRestaurant } from "@/services/restaurants/types";
+import {
+  IRestaurant,
+  IRestaurantAvgRating,
+} from "@/services/restaurants/types";
 import { restaurants } from "@/services/restaurants/restaurants.service";
 import { useRouter } from "next/router";
 import { logDev } from "@/infrastructure/utils";
 import { users } from "@/services/user/user.service";
-import { FaRegHeart, FaHeart, FaRegEdit, FaRegClock } from "react-icons/fa";
+import {
+  FaRegHeart,
+  FaHeart,
+  FaRegEdit,
+  FaRegClock,
+  FaStar,
+  FaRegStar,
+} from "react-icons/fa";
 import { IoLocationOutline } from "react-icons/io5";
 import ReviewCard from "@/ui/components/ReviewCard/ReviewCard";
 import { useModal } from "@/context/modal.context";
@@ -36,10 +47,9 @@ const RestaurantView: FC = () => {
   const { id } = router.query;
   const [restaurant, setRestaurant] = useState<IRestaurant | null>(null);
   const [error, setError] = useState<boolean>(false);
-
-  useEffect(() => {
-    loadData();
-  }, [id, user]);
+  const [starts, setStars] = useState<React.ReactNode[]>([]);
+  const [restaurantAvgRating, setRestaurantAvgRating] =
+    useState<IRestaurantAvgRating | null>(null);
 
   const loadData = () => {
     setError(false);
@@ -92,6 +102,31 @@ const RestaurantView: FC = () => {
     }
     openModal();
   };
+
+  useEffect(() => {
+    loadData();
+  }, [id, user]);
+
+  useEffect(() => {
+    restaurants
+      .getRestaurantAvgRatingById(restaurant?._id)
+      .then((res) => {
+        setRestaurantAvgRating(res);
+        const starsData = [];
+        for (let i = 0; i < Math.round(res.rating); i++) {
+          starsData.push(
+            <FaStar key={`star_${i}`} color={Ecolors.LIGHT_YELLOW} />
+          );
+        }
+        for (let i = 0; i < 5 - Math.round(res.rating); i++) {
+          starsData.push(
+            <FaRegStar key={`regStar_${i}`} color={Ecolors.LIGHT_YELLOW} />
+          );
+        }
+        setStars(starsData);
+      })
+      .catch((err) => logDev(err));
+  }, [restaurant]);
 
   if (error) {
     return (
@@ -220,6 +255,17 @@ const RestaurantView: FC = () => {
               {restaurant.address}
             </Text>
           </Flex>
+          {restaurantAvgRating && (
+            <HStack>
+              <Text color={Ecolors.REGULAR_GREY}>
+                {restaurantAvgRating.rating}
+              </Text>
+              {starts}
+              <Text color={Ecolors.REGULAR_GREY}>
+                ({restaurantAvgRating.totalRevirews})
+              </Text>
+            </HStack>
+          )}
         </Flex>
         <Flex minW={[0, 0, 400, 600]} flexDir={"column"} gap={3}>
           <FaRegClock size={25} color={Ecolors.DARK_GREEN} />
@@ -354,7 +400,7 @@ const RestaurantView: FC = () => {
           </Flex>
         </Flex>
       </Flex>
-      {true && (
+      {user && (
         <CreateReviewForm
           setRestaurant={setRestaurant}
           restaurant_id={restaurant._id}
