@@ -66,7 +66,7 @@ const RestaurantForm = () => {
   });
 
   const validationSchema = yup.object({
-    name: yup.string().required(t("yupValidation.name")),
+    name: yup.string().required(t("yupValidation.nameRequired")),
     address: yup.string().required(t("yupValidation.address")),
     cuisineType: yup.string().required(t("yupValidation.cuisineType")),
     operatingHours: yup.object({

@@ -111,7 +111,7 @@ const EditRestaurantForm: FC<EditRestaurantFormProps> = ({
   });
 
   const validationSchema = yup.object({
-    name: yup.string().required(t("yupValidation.name")),
+    name: yup.string().required(t("yupValidation.nameRequired")),
     cuisineType: yup.string().required(t("yupValidation.cuisineType")),
     operatingHours: yup.object({
       Monday: daySchema,
