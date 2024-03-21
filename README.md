@@ -56,3 +56,5 @@ You will need to create a .env (or .env.local) file if you want to run this proj
     </tr>
   </tbody>
 </table>
+
+This challenge has been developed by Jadde Suarez for [Tailor Hub](https://github.com/TailorHub-Mad/TailorChallenge/blob/master/instructions.md).
