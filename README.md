@@ -52,7 +52,7 @@ You will need to create a .env (or .env.local) file if you want to run this proj
 <table>
   <tbody>
     <tr>
-      <td align="center"><a href="https://github.com/jaddesuarez"><img src="https://avatars.githubusercontent.com/u/114647907?v=4" width="64px;" alt="Jadde Suarez"/><br /><sub><b>Jadde Suarez.</b></sub></a><br /><a href="https://www.linkedin.com/in/jaddesuarez/" title="Code">💻</a></td>
+      <td align="center"><a href="https://github.com/jaddesuarez"><img src="https://avatars.githubusercontent.com/u/114647907?v=4" width="64px;" alt="Jadde Suarez"/><br /><sub><b>Jadde Suarez</b></sub></a><br /><a href="https://www.linkedin.com/in/jaddesuarez/" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
